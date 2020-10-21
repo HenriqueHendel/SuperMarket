@@ -1,10 +1,14 @@
+import 'react-native-gesture-handler';
 import React from 'react';
+import {ProductsProvider} from './hooks/products';
 
 import Routes from './routes';
 
 const App: React.FC = ()=>{
     return (
-        <Routes />
+        <ProductsProvider>
+            <Routes />
+        </ProductsProvider>
     );
 }
 

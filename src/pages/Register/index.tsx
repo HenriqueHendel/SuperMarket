@@ -1,19 +1,36 @@
 import React, {useRef} from 'react';
 import {Text, TouchableOpacity,StyleSheet, Alert} from 'react-native';
+
+import {useProductsHook} from '../../hooks/products';
+
 import {FormHandles} from '@unform/core';
 import {Form} from '@unform/mobile';
-import asyncStorage from '@react-native-community/async-storage';
+
 
 import Input from '../../components/Input';
 
 import {Container} from './styles';
 
+interface ProductProps {
+    item: string;
+    value: number;
+    supermarket: string;
+}
+
 const Register: React.FC = ()=>{
+    const {setProducts} = useProductsHook();
+    const {products} = useProductsHook();
     const formRef = useRef<FormHandles>(null);
 
-    const handleFormSubmit = async (data: object)=>{
-        await asyncStorage.setItem('@Supermarket: Product', JSON.stringify(data));
+    const handleFormSubmit = async (data: ProductProps)=>{
+        data.value = Number(data.value);
+        console.log(data);
+        setProducts(data);
     };
+
+    const show = async() =>{
+        console.log(products);
+    }
 
     return(
         <Container>
@@ -27,6 +44,12 @@ const Register: React.FC = ()=>{
             <TouchableOpacity style={styles.button} onPress={()=>formRef.current?.submitForm()}>
                 <Text style={styles.buttonText}>
                     Salvar Item
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} onPress={show}>
+                <Text style={styles.buttonText}>
+                Show Storage
                 </Text>
             </TouchableOpacity>
 
